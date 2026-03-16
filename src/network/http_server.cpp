@@ -143,15 +143,13 @@ HttpResponse HttpServer::handleRequest(const HttpRequest& request) {
 }
 
 void HttpServer::processRawRequest(const char* rawData, int length) {
-    // VULNERABILITY: Use after free
     char* tempBuffer = new char[length + 1];
     memcpy(tempBuffer, rawData, length);
     tempBuffer[length] = '\0';
 
+    std::string processed(tempBuffer);
     delete[] tempBuffer;
 
-    // BUG: Use after free - accessing deleted memory
-    std::string processed(tempBuffer);
     std::cout << "Processed: " << processed << std::endl;
 }
 
