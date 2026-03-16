@@ -40,5 +40,7 @@ jobs:
           # See docs for more analysis parameters
           args: >
             --define "sonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json"
+            -Dsonar.organization=ozan
+            -Dsonar.projectKey=ozanyildirim-hub_ozanC-demo
   
    
