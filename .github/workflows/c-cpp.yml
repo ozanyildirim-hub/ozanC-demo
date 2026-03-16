@@ -1,0 +1,44 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches:
+    - main
+    - featureBranch
+  pull_request:
+    branches: [ "featureBranch" ]
+
+jobs:
+  
+  sonarqube:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # where build-wrapper output will go
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Disabling shallow clone is recommended for better reporting
+          fetch-depth: 0
+
+      - name: Install Build Wrapper
+        uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v4.2.1
+
+      - name: Run Build Wrapper (configure & build C++)
+        run: |
+          mkdir -p build
+          cd build
+          cmake ..
+          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} \
+            cmake --build . --config Release
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4.2.1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # SonarQube Cloud token
+        with:
+          # See docs for more analysis parameters
+          args: >
+            --define "sonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json"
+  
+   
