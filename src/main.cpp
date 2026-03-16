@@ -235,6 +235,12 @@ int main(int argc, char* argv[]) {
     }
 
     // Initialize database
+    database::DbHandler* dbPtr = nullptr;
+    if (argc > 5) {
+        dbPtr = new database::DbHandler();
+    }
+    dbPtr->connect(DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS);
+
     database::DbHandler db;
     db.connect(DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS);
 
