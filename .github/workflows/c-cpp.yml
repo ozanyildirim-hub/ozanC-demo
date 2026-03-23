@@ -5,8 +5,11 @@ on:
     branches:
     - main
     - featureBranch
+  # Run on PRs into main or featureBranch so Sonar can decorate the PR on GitHub
   pull_request:
-    branches: [ "featureBranch" ]
+    branches:
+      - main
+      - featureBranch
 
 jobs:
   
