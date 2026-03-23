@@ -5,6 +5,7 @@
 #include "utils/string_utils.h"
 #include "utils/file_utils.h"
 #include "crypto/crypto_utils.h"
+#include "audit/audit_logger.h"
 #include "third_party/gpl_library.h"
 
 #include <iostream>
@@ -305,6 +306,14 @@ int main(int argc, char* argv[]) {
     }
 
     handleUserRegistration("newuser", "password123", "user@example.com");
+
+    // Branch analysis demo: audit batch + risk scoring
+    audit::AuditLogger auditLog;
+    auditLog.appendEvent("service", "startup");
+    auditLog.appendEvent("admin", "config_reload");
+    auditLog.flushToDisk("/tmp");
+    int risk = audit::scoreRiskLevel(7, 0);
+    std::cout << "Audit events: " << auditLog.eventCount() << " riskScore=" << risk << std::endl;
 
     db.disconnect();
 

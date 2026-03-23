@@ -7,6 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(demo
     src/main.cpp
+    src/audit/audit_logger.cpp
     src/auth/auth_manager.cpp
     src/network/http_server.cpp
     src/database/db_handler.cpp
@@ -22,6 +23,7 @@ target_include_directories(demo PRIVATE
 
 add_executable(tests
     tests/test_main.cpp
+    src/audit/audit_logger.cpp
     src/auth/auth_manager.cpp
     src/database/db_handler.cpp
     src/utils/string_utils.cpp
