@@ -68,8 +68,8 @@ QueryResult DbHandler::executeQuery(const std::string& query) {
 }
 
 QueryResult DbHandler::findUser(const std::string& username) {
-    // VULNERABILITY: SQL Injection - direct string concatenation
-    std::string query = "SELECT * FROM users WHERE username = '" + username + "'";
+    std::string sanitized = escapeString(username);
+    std::string query = "SELECT * FROM users WHERE username = '" + sanitized + "'";
     return executeQuery(query);
 }
 
